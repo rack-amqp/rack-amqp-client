@@ -14,8 +14,8 @@ module Rack
         http_method = options[:http_method]
         timeout = options[:timeout] || 5
 
-
-        request = Request.new(@correlation_id += 1, http_method, uri, "", headers: {})
+        body = options[:body] || ""
+        request = Request.new(@correlation_id += 1, http_method, uri, body, headers: {})
         callback_queue = create_callback_queue(request.callback)
         request.callback_queue = callback_queue
 
@@ -39,7 +39,7 @@ module Rack
         queue, declare_ok = Fiber.yield
 
         Fiber.new do
-          queue.subscribe &sync_cb(Fiber.current)
+          queue.subscribe(&sync_cb(Fiber.current))
           loop { cb.call(Fiber.yield) }
         end.resume
         queue
