@@ -15,7 +15,9 @@ module Rack
         timeout = options[:timeout] || 5
 
         body = options[:body] || ""
-        request = Request.new(@correlation_id += 1, http_method, uri, body, headers: {})
+        headers = {'Content-Type' => 'application/x-www-form-urlencoded',
+                   'Content-Length' => body.length}.merge(options[:headers])
+        request = Request.new(@correlation_id += 1, http_method, uri, body, headers)
         callback_queue = create_callback_queue(request.callback)
         request.callback_queue = callback_queue
 
