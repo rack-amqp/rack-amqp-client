@@ -1,9 +1,5 @@
 require 'fiber'
 require 'amqp'
-require "rack/amqp/client/request"
-require "rack/amqp/client/response"
-require "rack/amqp/client/manager"
-require "rack/amqp/client/version"
 
 module Rack
   module AMQP
@@ -20,3 +16,8 @@ module Rack
     end
   end
 end
+
+require "rack/amqp/client/request"
+require "rack/amqp/client/response"
+require "rack/amqp/client/manager"
+require "rack/amqp/client/version"
