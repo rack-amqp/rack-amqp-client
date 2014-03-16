@@ -1,5 +1,2 @@
-require 'minitest/autorun'
-require 'minitest/mock'
-require 'minitest/stub_any_instance'
-require 'purdytest'
+require 'rspec'
 require 'rack/amqp/client'

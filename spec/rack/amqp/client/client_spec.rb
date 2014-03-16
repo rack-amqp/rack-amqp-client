@@ -4,12 +4,11 @@ describe Rack::AMQP::Client do
   describe '#with_client' do
     it 'yields something' do
       x = nil
-      Rack::AMQP::Client::Manager.stub_any_instance(:connect!, nil) do
-        Rack::AMQP::Client.with_client({}) do |mgr|
-          x = mgr
-        end
+      Rack::AMQP::Client::Manager.any_instance.stub(:connect!).and_return(nil)
+      Rack::AMQP::Client.with_client({}) do |mgr|
+        x = mgr
       end
-      refute_nil x
+      expect(x).to_not be_nil
     end
   end
 end
