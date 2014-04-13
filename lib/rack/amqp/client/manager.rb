@@ -49,10 +49,14 @@ module Rack
 
       def connect!(broker_options)
         @amqp_client = sync do |f|
-          ::AMQP.connect(broker_options, &sync_cb(f))
+          EventMachine.next_tick do
+            ::AMQP.connect(broker_options, &sync_cb(f))
+          end
         end
         # TODO Handle errors nicely
-        @amqp_channel = ::AMQP::Channel.new(@amqp_client)
+        EventMachine.next_tick do
+          @amqp_channel = ::AMQP::Channel.new(@amqp_client)
+        end
       end
 
       def sync &block

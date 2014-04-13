@@ -5,7 +5,7 @@ module Rack
   module AMQP
     module Client
       def self.with_client(*args, &block)
-        EM.run do
+        EventMachine.run do
           Fiber.new {
             yield Manager.new(*args)
             EM.stop
