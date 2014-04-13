@@ -1,7 +1,10 @@
+#require 'thread'
 module Rack
   module AMQP
     module Client
       class Request
+
+        SLEEP_INCREMENT = 
 
         attr_accessor :routing_key, :request_path, :body, :request_id, :callback_queue, :http_method
 
@@ -13,18 +16,23 @@ module Rack
           @body                       = body
           @routing_key, @request_path = split_uri uri
           @response = nil
+          @waiting = false
         end
 
         def reply_wait(timeout)
-          Fiber.yield
+          @waiting = true
+          Timeout.timeout(timeout) do
+            sleep 0.1 while @waiting
+          end
+          resp = @response
+          @reponse = nil
+          resp
         end
 
         def callback
-          f = Fiber.current
-          ->(args) {
-            meta, payload = args
-            @response = Response.new(meta.attributes, payload)
-            f.resume @response
+          ->(delivery_info, meta, payload) {
+            @waiting = false
+            @response = Response.new(meta, payload, delivery_info)
           }
         end
 
