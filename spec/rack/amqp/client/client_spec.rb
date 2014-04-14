@@ -26,6 +26,7 @@ describe Rack::AMQP::Client do
     end
 
     it "integrates", brittle: true do
+      pending "Some better way to test integrations"
       Timeout.timeout(3) do
         Rack::AMQP::Client.with_client(host: 'localhost') do |c|
           response = c.request('test.simple/users.json', {http_method: 'GET', headers: {}})
