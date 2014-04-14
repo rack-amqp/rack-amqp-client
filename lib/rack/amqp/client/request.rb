@@ -15,14 +15,14 @@ module Rack
           @headers                    = headers
           @body                       = body
           @routing_key, @request_path = split_uri uri
-          @response = nil
-          @waiting = false
+          @response                   = nil
+          @mutex                      = Mutex.new
+          @resource                   = ConditionVariable.new
         end
 
         def reply_wait(timeout)
-          @waiting = true
-          Timeout.timeout(timeout) do
-            sleep 0.1 while @waiting
+          @mutex.synchronize do
+            @resource.wait(@mutex, timeout)
           end
           resp = @response
           @reponse = nil
@@ -31,8 +31,10 @@ module Rack
 
         def callback
           ->(delivery_info, meta, payload) {
-            @waiting = false
-            @response = Response.new(meta, payload, delivery_info)
+            @mutex.synchronize do
+              @resource.signal
+              @response = Response.new(meta, payload, delivery_info)
+            end
           }
         end
 
