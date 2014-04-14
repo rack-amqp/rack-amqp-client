@@ -2,6 +2,13 @@ require 'spec_helper'
 require 'pry'
 
 describe Rack::AMQP::Client do
+
+  describe "#client" do
+    it "returns a Manager" do
+      expect(Rack::AMQP::Client.client(nil)).to be_instance_of(Rack::AMQP::Client::Manager)
+    end
+  end
+
   describe '#with_client' do
     it 'yields something' do
       x = nil

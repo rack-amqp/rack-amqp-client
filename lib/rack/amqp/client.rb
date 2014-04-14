@@ -7,6 +7,10 @@ module Rack
         yield Manager.new(*args)
       end
 
+      def self.client(*args)
+        Manager.new(*args)
+      end
+
     end
   end
 end
