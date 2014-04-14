@@ -61,7 +61,7 @@ module Rack
         end
 
         def user_agent
-          "amqurl-#{VERSION}"
+          "rack-amqp-client-#{VERSION}"
         end
 
         def split_uri(uri)

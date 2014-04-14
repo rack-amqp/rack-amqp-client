@@ -9,13 +9,17 @@ module Rack
           @correlation_id = 0
         end
 
+        # TODO bleh method
         def request(uri, options={})
           http_method = options[:http_method]
           timeout = options[:timeout] || 5
 
           body = options[:body] || ""
-          headers = {'Content-Type' => 'application/x-www-form-urlencoded',
-                     'Content-Length' => body.length}.merge(options[:headers])
+          headers = {
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Content-Length' => body.length
+          }.merge(options[:headers])
+
           request = Request.new(@correlation_id += 1, http_method, uri, body, headers)
           callback_queue = create_callback_queue(request.callback)
           request.callback_queue = callback_queue
@@ -30,14 +34,9 @@ module Rack
 
         def create_callback_queue(cb)
           # build queue
-          queue = build_callback_queue(cb)
-          # bind to an exchange, maybe later
-          queue
-        end
-
-        def build_callback_queue(cb)
           queue = amqp_channel.queue("", auto_delete: true, exclusive: true)
           queue.subscribe(&cb)
+          # bind to an exchange, maybe later
           queue
         end
 
