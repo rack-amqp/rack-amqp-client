@@ -2,6 +2,9 @@ require 'spec_helper'
 require 'pry'
 
 describe Rack::AMQP::Client do
+  before :each do
+    Rack::AMQP::Client::Synchronizer.instance.instance_variable_set('@mgr', nil)
+  end
 
   describe "#client" do
     it "returns a Manager" do

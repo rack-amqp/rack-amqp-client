@@ -29,13 +29,11 @@ module Rack
           resp
         end
 
-        def callback
-          ->(delivery_info, meta, payload) {
-            @mutex.synchronize do
-              @resource.signal
-              @response = Response.new(meta, payload, delivery_info)
-            end
-          }
+        def callback(delivery_info, meta, payload)
+          @mutex.synchronize do
+            @resource.signal
+            @response = Response.new(meta, payload, delivery_info)
+          end
         end
 
 
