@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["josh@optoro.com"]
   spec.description   = %q{An AMQP-HTTP ruby client}
   spec.summary       = %q{An AMQP-HTTP ruby client that relies on Bunny}
-  spec.homepage      = ""
+  spec.homepage      = "http://github.com/rack-amqp/rack-amqp-client"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
