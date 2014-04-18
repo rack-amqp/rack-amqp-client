@@ -6,10 +6,10 @@ require 'rack/amqp/client/version'
 Gem::Specification.new do |spec|
   spec.name          = "rack-amqp-client"
   spec.version       = Rack::AMQP::Client::VERSION
-  spec.authors       = ["Joshua Szmajda"]
+  spec.authors       = ["Joshua Szmajda", "John Nestoriak"]
   spec.email         = ["josh@optoro.com"]
-  spec.description   = %q{description goes here}
-  spec.summary       = %q{description goes here}
+  spec.description   = %q{An AMQP-HTTP ruby client}
+  spec.summary       = %q{An AMQP-HTTP ruby client that relies on Bunny}
   spec.homepage      = ""
   spec.license       = "MIT"
 
