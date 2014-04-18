@@ -8,6 +8,7 @@ describe Rack::AMQP::Client do
 
   describe "#client" do
     it "returns a Manager" do
+      Rack::AMQP::Client::Manager.any_instance.stub(:connect!).and_return(nil)
       expect(Rack::AMQP::Client.client(nil)).to be_instance_of(Rack::AMQP::Client::Manager)
     end
   end
