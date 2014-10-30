@@ -24,13 +24,17 @@ module Rack
 
           request = Request.new((@correlation_id += 1).to_s, http_method, uri, body, headers)
           @mutex.synchronize { @incomplete_requests << request }
+
           callback_queue = create_callback_queue
           request.callback_queue = callback_queue
 
           amqp_channel.direct('').publish(request.payload, request.publishing_options)
 
-          response = request.reply_wait(timeout)
-          response
+          puts "I'm async: #{!!options[:async]}"
+          unless options[:async]
+            response = request.reply_wait(timeout)
+            response
+          end
         end
 
         private
@@ -51,7 +55,7 @@ module Rack
           end
           # bind to an exchange, maybe later
           queue
-                              end
+          end
         end
 
         def connect!(broker_options)
