@@ -30,10 +30,10 @@ module Rack
 
           amqp_channel.direct('').publish(request.payload, request.publishing_options)
 
-          puts "I'm async: #{!!options[:async]}"
-          unless options[:async]
-            response = request.reply_wait(timeout)
-            response
+          if options[:async]
+            NullResponse.new
+          else
+            request.reply_wait(timeout)
           end
         end
 

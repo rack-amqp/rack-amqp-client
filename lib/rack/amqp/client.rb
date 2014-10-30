@@ -33,5 +33,6 @@ end
 
 require "rack/amqp/client/request"
 require "rack/amqp/client/response"
+require "rack/amqp/client/null_response"
 require "rack/amqp/client/manager"
 require "rack/amqp/client/version"
