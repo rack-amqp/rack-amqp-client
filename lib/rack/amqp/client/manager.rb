@@ -19,7 +19,7 @@ module Rack
           body = options[:body] || ""
           headers = {
             'Content-Type' => 'application/x-www-form-urlencoded',
-            'Content-Length' => body.length
+            'Content-Length' => body.bytesize
           }.merge(options[:headers])
 
           request = Request.new((@correlation_id += 1).to_s, http_method, uri, body, headers)
@@ -45,7 +45,7 @@ module Rack
           queue = amqp_channel.queue("", auto_delete: true, exclusive: true)
           queue.subscribe do |di, meta, payload|
             request = nil
-            @mutex.synchronize do 
+            @mutex.synchronize do
               request = @incomplete_requests.detect do |r|
                 r.request_id == meta[:correlation_id]
               end
